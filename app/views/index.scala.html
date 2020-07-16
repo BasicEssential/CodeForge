@@ -1,20 +1,14 @@
-@*
- * This template takes a single argument, a String containing a
- * message to display.
- *@
-@(message: String)
+@()(implicit request: RequestHeader, flash: Flash)
 
-@*
- * Call the `main` template with two arguments. The first
- * argument is a `String` with the title of the page, the second
- * argument is an `Html` object containing the body of the page.
- *@
-@main("Welcome to Play") {
+@main("Welcome to CodeForge. The place of your code statistics") {
 
-    @*
-     * Get an `Html` object by calling the built-in Play welcome
-     * template and passing a `String` message.
-     *@
-    @welcome(message, style = "scala")
+    <form method="post" action="@routes.LoginController.validateLogin">
+        <h3>Login CodeForge account </h3>
+        Username: <input type="text" name="username"></input>
+        <br>
+        passwordt: <input type="password" name="password"></input>
+        <br>
+        <input type="submit"></input>
+    </form>
 
 }

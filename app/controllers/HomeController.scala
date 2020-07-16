@@ -16,8 +16,12 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
    * will be called when the application receives a `GET` request with
    * a path of `/`.
    */
-  def index = Action {
-    Ok(views.html.index("Welcome to CodeForge"))
+  //def index = Action { implicit request =>
+  //  Ok(views.html.index("Welcome to CodeForge"))
+  // }
+
+  def product(productType: String, prodNum: Int) = Action {
+    Ok(s"Product type is: $productType, product number is $prodNum")
   }
 
 }

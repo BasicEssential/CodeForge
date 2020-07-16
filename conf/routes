@@ -1,10 +1,28 @@
-
 # Routes
-# This file defines all application routes (Higher priority routes first)
-# ~~~~
 
-# An example controller showing a sample home page
-GET     /                           controllers.HomeController.index
+GET /                              controllers.LoginController.login
+
++ nocsrf
+POST /                              controllers.LoginController.validateLogin
+
+
+
+
+
+# Examples
+GET     /productArgs                controllers.HomeController.product(productType: String, prodNum: Int)
+GET     /product/:productType/:prodNum      controllers.HomeController.product(productType: String, prodNum: Int)
+GET     /productRE/$productType<[a-z]{2}\d\d>/:prodNum   controllers.HomeController.product(productType: String, prodNum: Int)
+
+GET     /login1                     controllers.ToDoListProject.login
+GET     /validate1                  controllers.ToDoListProject.validateLogin(username, password)
+GET     /logout1                    controllers.ToDoListProject.logOut
+
++ nocsrf
+POST    /createUser                 controllers.ToDoListProject.createUser
+
++ nocsrf
+POST     /validatePost               controllers.ToDoListProject.validateLoginPost
 
 GET     /todo                       controllers.ToDoListProject.toDoList
 # An example controller showing how to use dependency injection

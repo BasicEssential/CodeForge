@@ -1,0 +1,14 @@
+@(todos: Seq[String])(implicit flash: Flash)
+
+@main("ToDo") {
+    <H2>CodeForge TODO: </H2>
+    <ul>
+        @for(todo <- todos){
+            <li>@todo</li>
+        }
+    </ul>
+
+    <div>
+        <a href="@routes.ToDoListProject.logOut">LogOut</a>
+    </div>
+}
