@@ -5,6 +5,10 @@ import controllers.models.LoginModel
 import javax.inject._
 import play.api.mvc._
 
+/**
+ * This is controller of all login processes
+ */
+
 @Singleton
 class LoginController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
 
@@ -24,7 +28,7 @@ class LoginController @Inject()(cc: ControllerComponents) extends AbstractContro
 
           if (LoginModel.validateUser(username, password)){
             println("Redirect to SETTINGS")
-            Redirect(routes.LoginController.login())
+            Redirect(routes.LoginController.setGit())
           }
           else {
             println("FAIL!")
@@ -33,5 +37,15 @@ class LoginController @Inject()(cc: ControllerComponents) extends AbstractContro
       }.getOrElse(Redirect(routes.LoginController.login()))
   }
 
+  def setGit = Action {
+    implicit request =>   Ok(views.html.setup())
+  }
 
+  def setGitByUser = Action{
+    implicit request =>   Ok(views.html.setupDB())
+  }
+
+  def setGitByOrg = Action{
+    implicit request =>   Ok(views.html.setupDB())
+  }
 }

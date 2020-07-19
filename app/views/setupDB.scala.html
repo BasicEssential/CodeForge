@@ -1,0 +1,51 @@
+@()(implicit request: RequestHeader, flash: Flash)
+
+@main("Let's quick set up before using CodeForge") {
+
+    <script type="text/javascript">
+            function showDiv(toggle){
+                document.getElementById(toggle).style.display = "block";
+            }
+
+            function hideDiv(toggle){
+                document.getElementById(toggle).style.display = "none";
+            }
+    </script>
+
+
+    <div>
+        <h2>Config data base</h2>
+    <ul>
+        <li>
+        <div>
+            <input type="button" name="" value="PostgreSQL" onclick="showDiv('toggle')"></input>
+
+            <div id="toggle" style="display:none">
+                <form method="get" action="@routes.HomeController.basicDash">
+                    <h3>Configuration for connection to PostrgeSQL</h3>
+                    host ip: <input type="text" name="host"></input>
+                    <br>
+                    port: <input type="text" name="port"></input>
+                    <br>
+                    database name: <input type="text" name="dbname"></input>
+                    <br>
+                    user: <input type="text" name="user"></input>
+                    <br>
+                    password: <input type="password" name="password"></input>
+                    <br>
+                    <input type="submit"></input>
+                </form>
+                <br>
+
+                <input type="button" name="answer" value="hide" onclick="hideDiv('toggle')"></input>
+            </div>
+        </div>
+        </li>
+
+
+        <li><input type="button" name="" value="MySQL" onclick=""></input></li>
+        <li><input type="button" name="" value="OracleDB" onclick=""></input></li>
+    </ul>
+    </div>
+
+}
