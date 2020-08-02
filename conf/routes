@@ -3,8 +3,10 @@
 GET         /                       controllers.LoginController.login
 + nocsrf
 POST        /login                  controllers.LoginController.validateLogin
-GET         /configgit              controllers.LoginController.setGit
-GET         /configBD               controllers.LoginController.setGitByUser
+
+GET        /configgit              controllers.LoginController.setGit
++ nocsrf
+POST         /configBD               controllers.LoginController.setGitByUser
 GET         /configBD               controllers.LoginController.setGitByOrg
 
 GET         /dashboard              controllers.HomeController.basicDash

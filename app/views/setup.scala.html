@@ -1,4 +1,4 @@
-@()(implicit request: RequestHeader, flash: Flash)
+@(gits: List[List[String]])(implicit request: RequestHeader, flash: Flash)
 
 @main("Let's quick set up before using CodeForge") {
 
@@ -12,43 +12,52 @@
             }
     </script>
 
-
     <div>
         <h2>GIT</h2>
-    <ul>
-        <li>
-        <div>
-            <input type="button" name="" value="GitHub" onclick="showDiv('toggle')"></input>
+        <ul>
+            @for(git <- gits){
 
-            <div id="toggle" style="display:none">
-                <form method="get" action="@routes.LoginController.setGitByUser">
-                    <h3>Set GIT by username</h3>
-                    Git username: <input type="text" name="username"></input>
-                    <br>
-                    GitRepo (unnecessary): <input type="text" name="repo"></input>
-                    <br>
-                    <input type="submit"></input>
-                </form>
-                <br>
-                <form method="get" action="@routes.LoginController.setGitByOrg">
-                <h3>Set GIT by organization</h3>
-                Git oragnization: <input type="text" name="organization"></input>
-                <br>
-                GitRepo (unnecessary): <input type="text" name="repo"></input>
-                <br>
-                <input type="submit"></input>
-                </form>
-                <br>
+                @if(git(1) == "1") {
+                    <div>
+                        <input type="button" name="@git(0)" value="@git(0)" onclick="showDiv('toggle')"></input>
 
-                <input type="button" name="answer" value="hide" onclick="hideDiv('toggle')"></input>
-            </div>
-        </div>
-        </li>
+                        <div id="toggle" style="display:none">
+                            <form method="post" action="@routes.LoginController.setGitByUser">
+                                <h3>Set GIT by username</h3>
+                                Git platform: <input type="text" name="platform" value="@git(0)"></input>
+                                <br>
+                                Git username: <input type="text" name="username"></input>
+                                <br>
+                                GitRepo (unnecessary): <input type="text" name="repo"></input>
+                                <br>
+                                <input type="submit"></input>
+                            </form>
+                            <br>
+                            <form method="post" action="@routes.LoginController.setGitByOrg">
+                                <h3>Set GIT by organization</h3>
+                                Git platform: <input type="text" name="platform" value="@git(0)"></input>
+                                <br>
+                                Git oragnization: <input type="text" name="organization"></input>
+                                <br>
+                                GitRepo (unnecessary): <input type="text" name="repo"></input>
+                                <br>
+                                <input type="submit"></input>
+                            </form>
+                            <br>
 
+                            <input type="button" name="answer" value="hide" onclick="hideDiv('toggle')"></input>
+                        </div>
+                    </div>
+                    </li>
+                } else {
+                <div>
+                    <input type="button" name="" value="@git(0)"></input>
 
-        <li><input type="button" name="" value="GitLab" onclick=""></input></li>
-        <li><input type="button" name="" value="BitBucket" onclick=""></input></li>
-    </ul>
+                </div>
+                </li>
+                }
+            }
+        </ul>
     </div>
 
 }
