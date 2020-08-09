@@ -22,10 +22,6 @@ object LoginModel {
   }
 
 
-  //def basicParser(fromWeb: String): JsValue = {
-  //  val fromWeb: JsValue = Json.parse(fromWeb)
-  //}
-
 
 
 

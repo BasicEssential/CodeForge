@@ -3,20 +3,33 @@ package controllers
 
 import controllers.models.LoginModel
 import controllers.models.GitAPI._
-
-
 import javax.inject._
 import play.api.mvc._
-import play.libs.ws.WSClient
 
-import scala.util.{Try,Success,Failure}
+import scala.concurrent.{Await, Future, duration}
+import scala.concurrent.duration._
+import play.api.libs.ws.{WSClient, WSRequest}
+import play.api.http.HttpEntity
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
+import akka.stream.scaladsl._
+import akka.util.ByteString
+
+import scala.collection.mutable.ListBuffer
 
 /**
  * This is controller of all login processes
  */
 
 @Singleton
-class LoginController @Inject()(ws: WSClient, cc: ControllerComponents) extends AbstractController(cc) {
+class LoginController @Inject()(ws:WSClient,
+                                cc: ControllerComponents) extends AbstractController(cc) {
+  // переменные для класса
+  case class UserInfo(var userName: String,
+                      var basicGitSpace: String,
+                      var repoName: String)
+
+  var userInfo: UserInfo = UserInfo("", "", "")
 
   // login form | index page
   def login = Action { implicit request =>
@@ -33,6 +46,9 @@ class LoginController @Inject()(ws: WSClient, cc: ControllerComponents) extends 
           val password = args("password").head
 
           if (LoginModel.validateUser(username, password)){
+
+            //сохраняем имя для дальнейшей работы (чтобы не обращаться)
+            this.userInfo.userName = username
             println("Redirect to SETTINGS")
             Redirect(routes.LoginController.setGit())
           }
@@ -46,11 +62,12 @@ class LoginController @Inject()(ws: WSClient, cc: ControllerComponents) extends 
   //init git settings page
   def setGit = Action {
     implicit request =>
-      Ok(views.html.setup(LoginModel.gits))
+      Ok(views.html.setup(LoginModel.gits, this.userInfo.userName))
   }
 
   //get info about git and parse datea
   def setGitByUser = Action{
+
     implicit request =>
       val postVals = request.body.asFormUrlEncoded
 
@@ -62,28 +79,50 @@ class LoginController @Inject()(ws: WSClient, cc: ControllerComponents) extends 
 
           //инициируем класс для работы с API
           val gAPI = new GitStrings(gitBase, userName, "", repoName)
-          println(gAPI.testConnection)
+          val pathToAPI = gAPI.testConnection
+          println(pathToAPI)
 
+          val git = new GitRequest(ws)
+
+          implicit val context = scala.concurrent.ExecutionContext.Implicits.global
+
+          //соединение для тестирования
+          // да, тормозим, но это надо сейчас, потом переделаем на пререлизе
+          val conStatus: String = Await.result(git.getStatus(pathToAPI), duration.Duration.Inf)
+
+          if (conStatus == "Connection successful"){
+              //сохраняем параметры для настройки
+              this.userInfo.basicGitSpace = userName
+              this.userInfo.repoName = repoName
+
+              // тестовый парсинг, потом убрать в функцию
+              // перед выводом дашборда
+
+            git.getResutlUser(pathToAPI)
+
+              Redirect(routes.LoginController.setDB())
+
+            } else {
+            Redirect(routes.LoginController.login())
+          }
+          }.getOrElse(Redirect(routes.LoginController.login()))
 
 
       }
 
-      Ok(views.html.setupDB())
-  }
-
   def setGitByOrg = Action{
-    implicit request =>   Ok(views.html.setupDB())
+    implicit request =>   Ok(views.html.setupDB(this.userInfo.userName, this.userInfo.basicGitSpace))
   }
 
   def setDB = Action{
-    implicit request =>   Ok(views.html.setupDB())
+    implicit request =>   Ok(views.html.setupDB(this.userInfo.userName, this.userInfo.basicGitSpace))
   }
 
 
 
   def toGit = Action{
     implicit request =>
-      Ok(views.html.setupDB())
+      Ok(views.html.setupDB(this.userInfo.userName, this.userInfo.basicGitSpace))
     //val gitConnect = ws.url("https://api.github.com/users/nameartem/repos").get()
   }
 }

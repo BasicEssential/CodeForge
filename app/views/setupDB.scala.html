@@ -1,4 +1,4 @@
-@()(implicit request: RequestHeader, flash: Flash)
+@(username: String, gitBasic: String)(implicit request: RequestHeader, flash: Flash)
 
 @main("Let's quick set up before using CodeForge") {
 
@@ -14,7 +14,7 @@
 
 
     <div>
-        <h2>Config data base</h2>
+        <h2>Please, @username, Config data base for @gitBasic</h2>
     <ul>
         <li>
         <div>

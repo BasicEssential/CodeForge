@@ -1,4 +1,4 @@
-@(gits: List[List[String]])(implicit request: RequestHeader, flash: Flash)
+@(gits: List[List[String]], userName: String)(implicit request: RequestHeader, flash: Flash)
 
 @main("Let's quick set up before using CodeForge") {
 
@@ -13,7 +13,7 @@
     </script>
 
     <div>
-        <h2>GIT</h2>
+        <h2>@userName, сделайте настройк GIT</h2>
         <ul>
             @for(git <- gits){
 
