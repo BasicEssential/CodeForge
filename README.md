@@ -1,7 +1,7 @@
 # Code Forge
 > Code Forge creates your project code understandable for managers
 
-**Expectation** :arrow_Down:
+**Expectation** :arrow_down:
 
 <img src="img/bluredDash.png">
 
