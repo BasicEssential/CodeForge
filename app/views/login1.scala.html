@@ -1,0 +1,32 @@
+@()(implicit request: RequestHeader, flash: Flash)
+
+@main("Login"){
+    <h2>Login</h2>
+
+    <form method="get" action="/validate1">
+        username: <input type="text" name="username"></input>
+        password: <input type="password" name="password"></input>
+        <input type="submit"></input>
+    </form>
+
+    </br>
+    </br>
+
+    <form method="post" action="@routes.ToDoListProject.validateLoginPost()">
+        @helper.CSRF.formField
+        username: <input type="text" name="username"></input>
+        passwordByPost: <input type="password" name="password"></input>
+        <input type="submit"></input>
+    </form>
+
+    </br>
+    </br>
+
+    <form method="post" action="@routes.ToDoListProject.createUser()">
+        <h3>Create user</h3>
+        username: <input type="text" name="username"></input>
+        passwordByPost: <input type="password" name="password"></input>
+        <input type="submit"></input>
+    </form>
+
+}

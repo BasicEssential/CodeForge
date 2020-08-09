@@ -1,10 +1,28 @@
-
 # Routes
-# This file defines all application routes (Higher priority routes first)
-# ~~~~
 
-# An example controller showing a sample home page
-GET     /                           controllers.HomeController.index
+GET         /                      controllers.LoginController.login
++ nocsrf
+POST        /login                 controllers.LoginController.validateLogin
+
+GET        /configgit              controllers.LoginController.setGit
++ nocsrf
+POST        /configDB              controllers.LoginController.setGitByUser
+GET         /configDB              controllers.LoginController.setGitByOrg
+GET         /confingDB             controllers.LoginController.setDB
+
+GET         /dashboard              controllers.HomeController.basicDash
+
+
+# Examples
+GET     /login1                     controllers.ToDoListProject.login
+GET     /validate1                  controllers.ToDoListProject.validateLogin(username, password)
+GET     /logout1                    controllers.ToDoListProject.logOut
+
++ nocsrf
+POST    /createUser                 controllers.ToDoListProject.createUser
+
++ nocsrf
+POST     /validatePost               controllers.ToDoListProject.validateLoginPost
 
 GET     /todo                       controllers.ToDoListProject.toDoList
 # An example controller showing how to use dependency injection
