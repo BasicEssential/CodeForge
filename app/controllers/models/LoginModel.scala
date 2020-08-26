@@ -11,7 +11,7 @@ object LoginModel {
   // create basic vars
   private val users = mutable.Map[String, String]("user" -> "pas")
   val gits = List[List[String]](List("GitHub.com", "1"), List("GitLab.com", "0"), List("BitBucket.com", "0"))
-  private val databases = mutable.Map[String, List[String]]("PostgreSQL" -> List(""), "SQLite3" -> List(""))
+  val databases = List[List[String]](List("H2", "1"), List("PostgreSQL", "1"), List("MySQL", "0"))
 
 
   def validateUser(username: String, password: String): Boolean = {

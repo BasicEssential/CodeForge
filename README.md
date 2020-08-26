@@ -50,8 +50,15 @@
 <a name="to-do"></a>
 
 - [x] Create parsing git vendors
-- [ ] Solve problem with PostgreSQL (connection and saving)
-- [ ] Solve problem with session saving
+- [X] Solve problem with PostgreSQL (connection and saving)
+  **But not as I expected. Into connection string with run**
+
+  ```bash
+  run -DVARIBLE=param
+  ```
+
+
+- [x] Solve problem with session saving
 - [ ] Set up a main schema (with colors) on a basic structure
 
 ### Releases :boom:

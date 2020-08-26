@@ -9,6 +9,7 @@ import play.api.mvc._
 import scala.concurrent.{Await, Future, duration}
 import scala.concurrent.duration._
 import play.api.libs.ws.{WSClient, WSRequest}
+import play.api.db.{Database, NamedDatabase}
 import play.api.http.HttpEntity
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
@@ -17,6 +18,7 @@ import akka.util.ByteString
 
 import scala.collection.mutable.ListBuffer
 
+
 /**
  * This is controller of all login processes
  */
@@ -24,6 +26,7 @@ import scala.collection.mutable.ListBuffer
 @Singleton
 class LoginController @Inject()(ws:WSClient,
                                 cc: ControllerComponents) extends AbstractController(cc) {
+
   // переменные для класса
   case class UserInfo(var userName: String,
                       var basicGitSpace: String,
@@ -33,7 +36,23 @@ class LoginController @Inject()(ws:WSClient,
 
   // login form | index page
   def login = Action { implicit request =>
-    Ok(views.html.index())
+
+    // чтобы если уже был, то на dash закидывал
+    //val username = request.session.get("username")
+
+    //username.map{ user =>
+    //  if (user.isEmpty) {
+          Ok(views.html.index())
+    //  }
+    //  else {
+    //    Ok(views.html.dashboard("DashBoard"))
+    //  }
+    //}.getOrElse(Redirect(routes.LoginController.login()))
+  }
+
+  def logout = Action {
+    //сделать в html кнопку выхода (её функция
+    Redirect(routes.LoginController.login()).withNewSession
   }
 
   //validate user / login and redirect to GIT settings or Statistic
@@ -50,7 +69,7 @@ class LoginController @Inject()(ws:WSClient,
             //сохраняем имя для дальнейшей работы (чтобы не обращаться)
             this.userInfo.userName = username
             println("Redirect to SETTINGS")
-            Redirect(routes.LoginController.setGit())
+            Redirect(routes.LoginController.setGit()).withSession("username" -> username)
           }
           else {
             println("FAIL!")
@@ -111,18 +130,18 @@ class LoginController @Inject()(ws:WSClient,
       }
 
   def setGitByOrg = Action{
-    implicit request =>   Ok(views.html.setupDB(this.userInfo.userName, this.userInfo.basicGitSpace))
+    implicit request =>   Ok(views.html.setupDB(this.userInfo.userName, this.userInfo.basicGitSpace, LoginModel.databases))
   }
 
   def setDB = Action{
-    implicit request =>   Ok(views.html.setupDB(this.userInfo.userName, this.userInfo.basicGitSpace))
+    implicit request =>   Ok(views.html.setupDB(this.userInfo.userName, this.userInfo.basicGitSpace, LoginModel.databases))
   }
 
 
 
   def toGit = Action{
     implicit request =>
-      Ok(views.html.setupDB(this.userInfo.userName, this.userInfo.basicGitSpace))
+      Ok(views.html.setupDB(this.userInfo.userName, this.userInfo.basicGitSpace, LoginModel.databases))
     //val gitConnect = ws.url("https://api.github.com/users/nameartem/repos").get()
   }
 }

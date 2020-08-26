@@ -1,7 +1,6 @@
-@(username: String, gitBasic: String)(implicit request: RequestHeader, flash: Flash)
+@(username: String, gitBasic: String, dbs: List[List[String]])(implicit request: RequestHeader, flash: Flash)
 
 @main("Let's quick set up before using CodeForge") {
-
     <script type="text/javascript">
             function showDiv(toggle){
                 document.getElementById(toggle).style.display = "block";
@@ -16,35 +15,42 @@
     <div>
         <h2>Please, @username, Config data base for @gitBasic</h2>
     <ul>
-        <li>
-        <div>
-            <input type="button" name="" value="PostgreSQL" onclick="showDiv('toggle')"></input>
 
-            <div id="toggle" style="display:none">
-                <form method="get" action="@routes.HomeController.basicDash">
-                    <h3>Configuration for connection to PostrgeSQL</h3>
-                    host ip: <input type="text" name="host"></input>
-                    <br>
-                    port: <input type="text" name="port"></input>
-                    <br>
-                    database name: <input type="text" name="dbname"></input>
-                    <br>
-                    user: <input type="text" name="user"></input>
-                    <br>
-                    password: <input type="password" name="password"></input>
-                    <br>
-                    <input type="submit"></input>
-                </form>
-                <br>
+        @for(db <- dbs){
 
-                <input type="button" name="answer" value="hide" onclick="hideDiv('toggle')"></input>
-            </div>
-        </div>
-        </li>
+            @if(db(1) == "1") {
+                <li>
+                <div>
+                    <input type="button" name="@db(0)" value="@db(0)" onclick="showDiv('toggle@db(0)')"></input>
 
+                    <div id="toggle@db(0)" style="display:none">
+                        <form method="post" action="@routes.HomeController.basicDash">
+                            <h3>Configuration for connection </h3>
+                            DB: <input type="radio" name="@db(0)" checked>@db(0)</input>
+                            <br>
+                            host ip: <input type="text" name="host"></input>
+                            <br>
+                            port: <input type="text" name="port"></input>
+                            <br>
+                            database name: <input type="text" name="dbname"></input>
+                            <br>
+                            user: <input type="text" name="user"></input>
+                            <br>
+                            password: <input type="password" name="password"></input>
+                            <br>
+                            <input type="submit"></input>
+                        </form>
+                        <br>
 
-        <li><input type="button" name="" value="MySQL" onclick=""></input></li>
-        <li><input type="button" name="" value="OracleDB" onclick=""></input></li>
+                        <input type="button" name="answer" value="hide" onclick="hideDiv('toggle@db(0)')"></input>
+                    </div>
+                </div>
+                </li>
+            } else {
+                <li><input type="button" name="@db(0)" value="@db(0)"  onclick=""></input></li>
+            }
+        }
+
     </ul>
     </div>
 

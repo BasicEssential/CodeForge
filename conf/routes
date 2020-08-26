@@ -10,7 +10,8 @@ POST        /configDB              controllers.LoginController.setGitByUser
 GET         /configDB              controllers.LoginController.setGitByOrg
 GET         /confingDB             controllers.LoginController.setDB
 
-GET         /dashboard              controllers.HomeController.basicDash
++ nocsrf
+POST         /dashboard              controllers.HomeController.basicDash
 
 
 # Examples

@@ -19,9 +19,9 @@
 
                 @if(git(1) == "1") {
                     <div>
-                        <input type="button" name="@git(0)" value="@git(0)" onclick="showDiv('toggle')"></input>
+                        <input type="button" name="@git(0)" value="@git(0)" onclick="showDiv('toggle@git(0)')"></input>
 
-                        <div id="toggle" style="display:none">
+                        <div id="toggle@git(0)" style="display:none">
                             <form method="post" action="@routes.LoginController.setGitByUser">
                                 <h3>Set GIT by username</h3>
                                 Git platform: <input type="text" name="platform" value="@git(0)"></input>
@@ -45,7 +45,7 @@
                             </form>
                             <br>
 
-                            <input type="button" name="answer" value="hide" onclick="hideDiv('toggle')"></input>
+                            <input type="button" name="answer" value="hide" onclick="hideDiv('toggle@git(0)')"></input>
                         </div>
                     </div>
                     </li>
